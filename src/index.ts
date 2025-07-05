@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { Resend } from 'resend';
 import { render } from '@react-email/render';
 import ContactEmail from '../emails/contact-email'; // Adjust path as needed
+import React from 'react';
 
 dotenv.config();
 
@@ -26,7 +27,7 @@ const sendEmailHandler = async (req: Request, res: Response): Promise<void> => {
   
   try {
     // Create the email HTML using the template function
-    const emailHtml = await render(ContactEmail(formData));
+    const emailHtml = await render(React.createElement(ContactEmail, formData));;
 
     const data = await resend.emails.send({
       from: 'Your Website <noreply@yourdomain.com>', // Use your verified domain
