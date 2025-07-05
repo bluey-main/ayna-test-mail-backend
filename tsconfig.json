@@ -12,11 +12,13 @@
     "declaration": false,
     "removeComments": true,
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "jsx": "react-jsx",
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "src/**/*"
-  ],
+, "emails"  ],
   "exclude": [
     "node_modules",
     "dist"
