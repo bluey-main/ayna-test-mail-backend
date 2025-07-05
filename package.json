@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
+"scripts": {
     "dev": "ts-node-dev src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "postbuild": "cp -r node_modules dist/ || xcopy node_modules dist\\node_modules /E /I"
   },
   "keywords": [],
   "author": "",
