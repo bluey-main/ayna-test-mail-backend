@@ -3,7 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { Resend } from 'resend';
 import { render } from '@react-email/render';
-import ContactEmail from '../emails/contact-email'; // Adjust path as needed
+import ContactEmail from '../emails/contact-email';
 import React from 'react';
 
 dotenv.config();
@@ -26,14 +26,31 @@ const sendEmailHandler = async (req: Request, res: Response): Promise<void> => {
   const { to, subject, formData }: { to: string; subject: string; formData: ContactFormData } = req.body;
   
   try {
-    // Create the email HTML using the template function
-    const emailHtml = await render(React.createElement(ContactEmail, formData));;
+    // Generate HTML from your React email template
+    const emailHtml = await render(React.createElement(ContactEmail, formData));
+    
+    // Create a plain text version as fallback
+    const emailText = `
+New Contact Form Submission
+
+Name: ${formData.from_name}
+Email: ${formData.from_email}
+Phone: ${formData.phone_number}
+Subject: ${formData.subject}
+
+Message:
+${formData.message}
+    `.trim();
+
+    console.log('Generated HTML:', emailHtml ? 'HTML generated successfully' : 'HTML generation failed');
+    console.log('Email text:', emailText);
 
     const data = await resend.emails.send({
-      from: 'Your Website <noreply@yourdomain.com>', // Use your verified domain
+      from: 'onboarding@resend.dev', // Use verified domain
       to,
       subject: `Contact Form: ${subject}`,
       html: emailHtml,
+      text: emailText, // Always provide text as fallback
     });
     
     res.status(200).json({ success: true, data });
